@@ -41,4 +41,5 @@ vignettes/*.pdf
 # *.csv
 # *.RDS
 
-
+# Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
+rsconnect/
