@@ -118,7 +118,7 @@ for (r in c(1:nrow(grid))) {
   }
   acc <- mean(theModel$class==y_train)
   aper <- 1 - mean(theModel$class==y_train)
-  print(paste("acc: ", acc, " -- aper: ", aper))
+  print(paste("acc: ", round(acc, 4), " -- aper: ", round(aper, 4)))
   errors <- c(errors, aper)
 }
 
