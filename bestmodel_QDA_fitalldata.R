@@ -37,6 +37,11 @@ y[idx7] <- 7
 y[idx8] <- 8
 y[idx9] <- 9
 
+#correct the rotation
+rotate <- function(x) t(apply(x, 2, rev))
+for (i in c(1:nrow(X))) {
+  X[i,,] <- rotate(X[i,,])
+}
 
 PCA <- function(X) {
   pca <- prcomp(X, scale=T)
