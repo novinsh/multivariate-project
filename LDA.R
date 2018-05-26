@@ -86,6 +86,7 @@ y_test <- y[(trainSize+1):end(pca$x)[1]]
 stopifnot(nrow(X) == nrow(X_train) + nrow(X_test))
 stopifnot(nrow(X) == length(y_train) + length(y_test))
 
+# cross validation and finding the best number of features
 for (nr_features in pcCuts) {
   train <- data.frame(X_train[,1:nr_features], y_train)
   varExplained <- cumulativeVariance[nr_features]
