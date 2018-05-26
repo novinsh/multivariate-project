@@ -3,6 +3,8 @@ library(reticulate) # for loading npy objects
 library(MASS) # for LDA and QDA
 library(ramify) # for argmax
 
+set.seed(0)
+
 np <- import("numpy")
 X <- np$load("dataset/X.npy")
 y <- np$load("dataset/Y.npy")
@@ -65,7 +67,7 @@ dim(X) <- c(nrow(X), 64*64)
 # plot to make sure
 nr_rows = 5
 par(mfrow = c(nr_rows, nr_rows), mar=c(1,1,1,1))
-indices2plot <- as.integer(runif(nr_rows, 1, nrow(X)))
+indices2plot <- as.integer(runif(nr_rows*nr_rows, 1, nrow(X)))
 for( i in indices2plot) {
   m = matrix(X[i,], 64, 64)
   image(m, useRaster=TRUE, axes=FALSE)
@@ -97,7 +99,7 @@ stopifnot(nrow(X) == length(y_train) + length(y_test))
 best_acc <- 0
 best_nr_pc <- -1
 
-grid <- expand.grid(models=c("lda", "qda"), methods=c("moment","mle"), pcs=pcaCuts)
+grid <- expand.grid(models=c("lda", "qda"), methods=c("mle"), pcs=pcaCuts)
 errors = c()
 for (r in c(1:nrow(grid))) {
   model = grid$models[r]
@@ -154,4 +156,8 @@ for( i in c(1:length(misclass))) {
   title(paste0(yhat$class[misclass[i]],' > ', y_test[misclass[i]]), font.main=2)
 }
 
-misclass
+# posterior probabilities
+map<-as.data.frame(cbind(yhat=yhat$class,yhat$posterior,y_test)); fix(map) # study 'class' and 'posterior' from predict()
+
+plot(yhat$x[,1],lsc1pred$x[,2], col=grsc) # make a scatterplot of the first two discriminant functions scores
+text(lsc1pred$x[,1],lsc1pred$x[,2],grsc,cex=0.7,pos=4,col="blue") # add labels
