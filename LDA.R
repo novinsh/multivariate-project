@@ -61,6 +61,7 @@ for( i in indices2plot) {
 
 # perform PCA and pick a number of PCs as features
 pca <- prcomp(X, scale=T)
+cumulativeVariance <- cumsum(pca$sdev^2)/sum(pca$sdev^2) # components cumsum
 nrFeatures1 <- which(cumulativeVariance < 0.95)
 nrFeatures1 <- nrFeatures1[end(nrFeatures1)][1]
 nrFeatures2 <- which(cumulativeVariance < 0.80)
@@ -72,7 +73,6 @@ nrFeatures4 <- which(pca$sdev^2 > mean(pca$sdev^2))
 nrFeatures4 <- nrFeatures4[end(nrFeatures4)][1]
 
 pcCuts <- c(nrFeatures1, nrFeatures2, nrFeatures3, nrFeatures4)
-cumulativeVariance <- cumsum(pca$sdev^2)/sum(pca$sdev^2) # components cumsum
 
 # split into train and test
 ratio = 0.75
@@ -111,21 +111,25 @@ aper = 1 - mean(yhat$class==y_test)
 aper
 
 misclass <- which(yhat$class!=y_test)
+length(misclass)
 
 # display the misclassifications
 nr_rows = ceiling(sqrt(length(misclass)))
 par(mfrow = c(nr_rows, nr_rows))
 
-for( i in c(1:length(misclass))) {
+for( i in c(1:(nr_rows*nr_rows))) {
+  if (i > length(misclass)) {
+    break
+  }
   m = matrix(X[misclass[i],], 64, 64)
   # plot.new()
   # plot.window(xlim=c(0, 1), ylim=c(0, 1), asp=1)
   image(m, useRaster=TRUE, axes=FALSE)
   title(paste0(yhat$class[misclass[i]],' > ', y_test[misclass[i]]), font.main=2)
 }
+posteriors <- formatC(yhat$posterior, format = "e", digits = 1)
 
 # posterior probabilities
-map<-as.data.frame(cbind(yhat=yhat$class,y_test,yhat$posterior)); fix(map) # study 'class' and 'posterior' from predict()
+map<-as.data.frame(cbind(yhat=yhat$class,factor(y_test),posteriors)); fix(map) # study 'class' and 'posterior' from predict()
 par(mfrow=c(1,1))
-plot(yhat$x[,1],yhat$x[,2], col=y_test) # make a scatterplot of the first two discriminant functions scores
-text(yhat$x[,1],yhat$x[,2],y_test,cex=0.7,pos=4,col="blue") # add labels
+pairs(yhat$x[,1:3], col=y_test) # make a scatterplot of the first two discriminant functions scoresnr_rows
