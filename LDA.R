@@ -11,29 +11,16 @@ y <- np$load("dataset/Y.npy")
 y <- argmax(y)-1
 unique(y)
 
-# the labels loaded from the dataset are not corresponding to the value shown in the picture
-# map the labels to the values shown in the picture values:
-idx9 <- which(y==0)
-idx0 <- which(y==1)
-idx7 <- which(y==2)
-idx6 <- which(y==3)
-idx1 <- which(y==4)
-idx8 <- which(y==5)
-idx4 <- which(y==6)
-idx3 <- which(y==7)
-idx2 <- which(y==8)
+# the labels loaded from the dataset are not corresponding to the value shown in 
+# the image map the labels to the values shown in the picture values:
+idx9 <- which(y==0); idx0 <- which(y==1); idx7 <- which(y==2)
+idx6 <- which(y==3); idx1 <- which(y==4); idx8 <- which(y==5)
+idx4 <- which(y==6); idx3 <- which(y==7); idx2 <- which(y==8)
 idx5 <- which(y==9)
 
-y[idx0] <- 0
-y[idx1] <- 1
-y[idx2] <- 2
-y[idx3] <- 3
-y[idx4] <- 4
-y[idx5] <- 5
-y[idx6] <- 6
-y[idx7] <- 7
-y[idx8] <- 8
-y[idx9] <- 9
+y[idx0] <- 0; y[idx1] <- 1; y[idx2] <- 2; y[idx3] <- 3; y[idx4] <- 4
+y[idx5] <- 5; y[idx6] <- 6; y[idx7] <- 7; y[idx8] <- 8; y[idx9] <- 9
+
 
 #correct the rotation
 rotate <- function(x) t(apply(x, 2, rev))
@@ -57,6 +44,16 @@ for( i in indices2plot) {
   m = matrix(X[i,], 64, 64)
   image(m, useRaster=TRUE, axes=FALSE)
   title(paste0(y[i]), font.main=2)
+}
+
+# plot to make sure
+par(mfrow = c(2, 5), mar=c(1,1,1,1))
+#indices2plot <- as.integer(runif(nr_rows*nr_rows, 1, nrow(X)))
+for( i in seq(0,9)) {
+  idx <- which(y == i)[1]
+  m = matrix(X[idx,], 64, 64)
+  image(m, useRaster=TRUE, axes=FALSE)
+  title(paste0(y[idx]), font.main=2)
 }
 
 # perform PCA and pick a number of PCs as features
@@ -132,4 +129,4 @@ posteriors <- formatC(yhat$posterior, format = "e", digits = 1)
 # posterior probabilities
 map<-as.data.frame(cbind(yhat=yhat$class,factor(y_test),posteriors)); fix(map) # study 'class' and 'posterior' from predict()
 par(mfrow=c(1,1))
-pairs(yhat$x[,1:3], col=y_test) # make a scatterplot of the first two discriminant functions scoresnr_rows
+pairs(yhat$x[,1:3], col=y_test) # make a scatterplot of the first three discriminant functions scores
