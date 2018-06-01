@@ -50,3 +50,13 @@ for (i in pixels) {
   lines(d, col="red")
   rug(X[,i], col="blue")
 }
+
+# example
+par(mfrow = c(2, 5), mar=c(1,1,1,1))
+#indices2plot <- as.integer(runif(nr_rows*nr_rows, 1, nrow(X)))
+for( i in seq(0,9)) {
+  idx <- which(y == i)[1]
+  m = matrix(X[idx,], 64, 64)
+  image(m, useRaster=TRUE, axes=FALSE)
+  title(paste0(y[idx]), font.main=2)
+}
