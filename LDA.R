@@ -46,16 +46,6 @@ for( i in indices2plot) {
   title(paste0(y[i]), font.main=2)
 }
 
-# plot to make sure
-par(mfrow = c(2, 5), mar=c(1,1,1,1))
-#indices2plot <- as.integer(runif(nr_rows*nr_rows, 1, nrow(X)))
-for( i in seq(0,9)) {
-  idx <- which(y == i)[1]
-  m = matrix(X[idx,], 64, 64)
-  image(m, useRaster=TRUE, axes=FALSE)
-  title(paste0(y[idx]), font.main=2)
-}
-
 # perform PCA and pick a number of PCs as features
 pca <- prcomp(X, scale=T)
 cumulativeVariance <- cumsum(pca$sdev^2)/sum(pca$sdev^2) # components cumsum
