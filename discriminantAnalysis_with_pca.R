@@ -159,5 +159,3 @@ for( i in c(1:length(misclass))) {
 # posterior probabilities
 map<-as.data.frame(cbind(yhat=yhat$class,yhat$posterior,y_test)); fix(map) # study 'class' and 'posterior' from predict()
 
-plot(yhat$x[,1],lsc1pred$x[,2], col=grsc) # make a scatterplot of the first two discriminant functions scores
-text(lsc1pred$x[,1],lsc1pred$x[,2],grsc,cex=0.7,pos=4,col="blue") # add labels
