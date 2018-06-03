@@ -117,6 +117,6 @@ for( i in c(1:(nr_rows*nr_rows))) {
 posteriors <- formatC(yhat$posterior, format = "e", digits = 1)
 
 # posterior probabilities
-map<-as.data.frame(cbind(yhat=yhat$class,factor(y_test),posteriors)); fix(map) # study 'class' and 'posterior' from predict()
+map<-as.data.frame(cbind(pred=as.character(yhat$class),true=as.character(y_test),posteriors)); fix(map) # study 'class' and 'posterior' from predict()
 par(mfrow=c(1,1))
 pairs(yhat$x[,1:3], col=y_test) # make a scatterplot of the first three discriminant functions scores
